@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
@@ -10,6 +11,20 @@ function App() {
   const token = cookies.get("token");
 
   const client = StreamChat.getInstance(api_key);
+
+  const [isAuth, setIsAuth] = useState(false);
+
+  const logout = () => {
+    cookies.remove("token");
+    cookies.remove("userId");
+    cookies.remove("firstName");
+    cookies.remove("lastName");
+    cookies.remove("hashedPassword");
+    cookies.remove("channelName");
+    cookies.remove("username");
+    client.disconnectUser();
+    setIsAuth(false);
+  };
 
   if (token) {
     client
@@ -24,14 +39,20 @@ function App() {
         token
       )
       .then((user) => {
-        console.log(user);
+        setIsAuth(true);
       });
   }
 
   return (
     <div className="App">
-      <SignUp />
-      <Login />
+      {isAuth ? (
+        <button onClick={logout}>Log out</button>
+      ) : (
+        <>
+          <SignUp setIsAuth={setIsAuth} />
+          <Login setIsAuth={setIsAuth} />
+        </>
+      )}
     </div>
   );
 }
