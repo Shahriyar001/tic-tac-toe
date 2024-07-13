@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 it's a web game project
-In the project directory, you can run:
+In the project directory, you can run in localhost:
 
 ### `npm start`
 
